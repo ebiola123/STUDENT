@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Management System</title>
+<style>
+    body {
+        background-image: url('123.jpg');
+        font-family: Arial, sans-serif;
+        background-color: #181cdf;
+        margin: 0;
+        padding: 60px;
+        position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        background: #131212;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(240, 23, 185, 0.1);
+        background: transparent;
+        border-color: rgb(220, 124, 14);
+        border-radius: 60px;
+        text-decoration-color: rgb(24, 23, 17);
+        align-content: center;
+    }
+
+    h1 {
+        text-align: center;
+        text-decoration: underline;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: #0f0e0e;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: rgb(41, 134, 12);
+  color: rgb(102, 102, 175);
+}
+
+h1 {
+  background-color: rgb(172, 36, 131);
+  color: rgb(27, 172, 92);
+}
+
+div {
+  background-color: rgb(64, 64, 117);
+  color: rgb(12, 12, 12);
+    }
+
+    .Studentitem {
+        border-bottom: 1px solid #0e0d0d;
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .Student-item:last-child {
+        border-bottom: none;
+    }
+
+    .Student-details {
+        flex: 1;
+    }
+
+    .Student-actions {
+        flex-basis: 150px;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management System</h1>
+        <form id="studentForm">
+            <label for="firstname">First Name:</label>
+            <input type="text" id="firstname" required><br>
+            <label for="lastname">Last Name:</label>
+            <input type="text" id="lastname" required><br>
+            <label for="age">Age:</label>
+            <input type="number" id="age" required><br>
+            <label for="gender">Gender:</label>
+            <select id="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br>
+            <label for="position">Position:</label>
+            <input type="text" id="position" required><br>
+            <button type="button" onclick="addStudent()">Add Student</button>
+        </form>
+
+        <div id="studentList">
+            <!-- Student list will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        let students = [];
+
+        function addStudent() {
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const position = document.getElementById('position').value;
+
+            const student = {
+                firstname: firstname,
+                lastname: lastname,
+                age: age,
+                gender: gender,
+                position: position
+            };
+
+            students.push(student);
+            displayStudents();
+            clearForm();
+        }
+
+        function displayStudents() {
+            const studentList = document.getElementById('studentList');
+            studentList.innerHTML = '';
+
+            students.forEach((student, index) => {
+                const studentItem = document.createElement('div');
+                studentItem.classList.add('student-item');
+                studentItem.innerHTML = `
+                    <div class="student-details">
+                        <p><strong>Name:</strong> ${student.firstname} ${student.lastname}</p>
+                        <p><strong>Age:</strong> ${student.age}</p>
+                        <p><strong>Gender:</strong> ${student.gender}</p>
+                        <p><strong>Position:</strong> ${student.position}</p>
+                    </div>
+                    <div class="student-actions">
+                        <button onclick="editStudent(${index})">Edit</button>
+                        <button onclick="deleteStudent(${index})">Delete</button>
+                    </div>
+                `;
+                studentList.appendChild(studentItem);
+            });
+        }
+
+        function editStudent(index) {
+            const student = students[index];
+            document.getElementById('firstname').value = student.firstname;
+            document.getElementById('lastname').value = student.lastname;
+            document.getElementById('age').value = student.age;
+            document.getElementById('gender').value = student.gender;
+            document.getElementById('position').value = student.position;
+
+            students.splice(index, 1);
+            displayStudents();
+        }
+
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            displayStudents();
+        }
+
+        function clearForm() {
+            document.getElementById('firstname').value = '';
+            document.getElementById('lastname').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('gender').value = 'male';
+            document.getElementById('position').value = '';
+        }
+
+        displayStudents();
+    </script>
+</body>
+</html>
